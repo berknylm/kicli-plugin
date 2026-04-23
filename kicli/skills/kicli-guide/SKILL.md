@@ -35,7 +35,8 @@ or a **project directory** — in dir mode they walk every sheet.
 ## Key conventions
 
 - **Pin type abbreviations in `view` / `info --pins`:** `in, out, inout, pass, pwrin, pwrout, tri, oc, oe, nc, -`
-- **Net symbols in `view`:** `~` = floating (no wire), `NC` = intentional no-connect
+- **NAME column:** `-` means the pin is unnamed (common on passives). Not to be confused with `~` in the NET column.
+- **NET column:** `~` = floating (no wire), `NC` = intentional no-connect marker, `name:pin, …` = unlabeled wire cluster (peer list)
 - **`(unset)`** in the PartNo column means the `LCSC` property is missing — this is the row to fill for BOM prep
 - **Dir mode for `list` / `view` / `info`** walks every `.kicad_sch` in the project; `view` additionally runs `kicad-cli` netlist on the root schematic so cross-sheet nets resolve consistently
 - **`--footprint <glob>`** prevents wrong-package part assignment in bulk edits
