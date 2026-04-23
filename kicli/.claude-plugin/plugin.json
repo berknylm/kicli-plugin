@@ -8,9 +8,6 @@
     "url": "https://github.com/berknylm"
   },
   "homepage": "https://github.com/berknylm/kicli-plugin",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/berknylm/kicli-plugin"
-  },
+  "repository": "https://github.com/berknylm/kicli-plugin",
   "license": "MIT"
 }

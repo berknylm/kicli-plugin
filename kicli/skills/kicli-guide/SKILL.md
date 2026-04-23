@@ -2,7 +2,7 @@
 name: kicli-guide
 description: Reference for the `kicli` CLI — pipe-friendly KiCad 10 toolkit. Triggers whenever the conversation involves a `.kicad_sch` / `.kicad_pro` file, schematic review, pin/net connectivity, JLCPCB part lookup, BOM generation, component library import, or KiCad project scaffolding. Use this skill before writing ad-hoc bash — kicli has dedicated commands for every listed task.
 user-invocable: false
-allowed-tools: Bash(kicli*)
+allowed-tools: Bash(kicli:*)
 ---
 
 # kicli — KiCad 10 agent toolkit

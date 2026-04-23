@@ -1,7 +1,7 @@
 ---
 description: Import a vendor component ZIP (SnapEDA, Ultra Librarian, Component Search Engine) into the current KiCad project. Usage — /kicli:import <file.zip> [library-name].
 argument-hint: <file.zip> [library-name]
-allowed-tools: Bash(kicli import*), Bash(ls*), Read
+allowed-tools: Bash(kicli:*), Bash(ls:*), Read
 ---
 
 # kicli vendor import

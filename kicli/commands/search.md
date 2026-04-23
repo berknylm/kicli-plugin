@@ -1,7 +1,7 @@
 ---
 description: Search JLCPCB for a part and present the best candidates with stock, price, and datasheet. Usage — /kicli:search <query> [-n N] [--basic|--extended] [--in-stock] [--package PKG].
 argument-hint: <query> [-n N] [--basic|--extended] [--in-stock] [--package PKG]
-allowed-tools: Bash(kicli jlcpcb*), Bash(grep*), Bash(awk*)
+allowed-tools: Bash(kicli jlcpcb:*), Bash(grep:*), Bash(awk:*)
 ---
 
 # kicli JLCPCB part search

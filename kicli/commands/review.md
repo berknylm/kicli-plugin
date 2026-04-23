@@ -1,7 +1,7 @@
 ---
 description: End-to-end KiCad schematic review — inventory, connectivity, floating pins, datasheet cross-check. Usage — /kicli:review <sch-file-or-project-dir>.
 argument-hint: <file.kicad_sch | project/>
-allowed-tools: Bash(kicli*), Bash(grep*), Bash(awk*), Bash(sort*), Bash(cut*), Read, WebFetch
+allowed-tools: Bash(kicli:*), Bash(grep:*), Bash(awk:*), Bash(sort:*), Bash(cut:*), Read, WebFetch
 ---
 
 # kicli schematic review

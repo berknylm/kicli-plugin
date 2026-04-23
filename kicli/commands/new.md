@@ -1,7 +1,7 @@
 ---
 description: Scaffold a new KiCad 10 project with the standard kicli layout — blank schematic, sym-lib-table, fp-lib-table, libs/ tree, and .kicli.toml. Usage — /kicli:new <project-name> [directory].
 argument-hint: <project-name> [directory]
-allowed-tools: Bash(kicli new*), Bash(ls*)
+allowed-tools: Bash(kicli new:*), Bash(ls:*)
 ---
 
 # kicli new project
@@ -11,10 +11,9 @@ Directory (optional): `$1` — defaults to a new folder named `$0`
 
 ## Steps
 
-1. Run:
-   ```
-   kicli new "$0" ${1:+"$1"}
-   ```
+1. Run the appropriate form:
+   - If `$1` is empty: `kicli new "$0"`
+   - If `$1` is provided: `kicli new "$0" "$1"`
 2. List the generated files (`ls -la $0` or the chosen dir) so the user sees the layout:
    - `<name>.kicad_pro` — KiCad 10 project file
    - `<name>.kicad_sch` — blank root schematic with UUID

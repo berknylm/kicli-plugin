@@ -1,7 +1,7 @@
 ---
 description: Generate a JLCPCB-ready BOM from a KiCad schematic or project directory, fill any missing part numbers, and export the final CSV. Usage — /kicli:bom <file-or-dir> [output.csv].
 argument-hint: <file.kicad_sch | project/> [output.csv]
-allowed-tools: Bash(kicli*), Bash(grep*), Bash(awk*), Read
+allowed-tools: Bash(kicli:*), Bash(grep:*), Bash(awk:*), Read
 ---
 
 # kicli BOM preparation

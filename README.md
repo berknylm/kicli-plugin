@@ -28,14 +28,15 @@ AI-native KiCad 10 workflow inside Claude Code. Wraps the [`kicli`](https://gith
 Inside Claude Code:
 
 ```
-/plugin marketplace add github:berknylm/kicli-plugin
+/plugin marketplace add berknylm/kicli-plugin
 /plugin install kicli@kicli-marketplace
 ```
 
-Or, for local development:
+Or, for local development — add the cloned repo as a local marketplace:
 
-```bash
-claude --plugin-dir /path/to/kicli-plugin
+```
+/plugin marketplace add /path/to/kicli-plugin
+/plugin install kicli@kicli-marketplace
 ```
 
 Reload after editing the plugin without restarting Claude Code:
