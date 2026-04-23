@@ -20,11 +20,11 @@ or a **project directory** — in dir mode they walk every sheet.
 |---|---|
 | Inventory components | `kicli sch <file\|dir> list [--all]` → tab-separated `REF\tVALUE\tLIB\tFOOTPRINT\tPartNo` (dir mode adds a 6th column `SHEET`; missing PartNo prints as `(unset)`) |
 | Component detail | `kicli sch <file\|dir> info <REF> [--pins]` (`--pins` adds full pin table `NUM\tNAME\tTYPE\tNET`) |
-| Pin+net connectivity | `kicli sch <file\|dir> view [-o FILE]` (dir mode resolves nets across sheets via the root `.kicad_sch`'s netlist — sheet-pin ↔ hierarchical-label bridges show under one net name) |
+| Pin+net connectivity | `kicli sch <file\|dir> view [-o FILE] [--net NET]` (dir mode resolves nets across sheets via the root `.kicad_sch`'s netlist. `--net NET` emits a flat pin table for one net — `REF:PIN\tNAME\tTYPE[\tSHEET]`) |
 | Edit one field | `kicli sch <file> set <REF> <FIELD> <VALUE>` |
 | Bulk edit with filter | `kicli sch <file\|dir> set-all <VALUE> <FIELD> <NEW> [--footprint <glob>] [--dry-run]` |
 | Export | `kicli sch <file> export pdf\|svg\|netlist\|bom [-o FILE]` |
-| ERC check | `kicli sch <file> erc [-o FILE\|-]` (`-o -` streams the report to stdout) |
+| ERC check | `kicli sch <file> erc [-o FILE\|-] [--format report\|json]` (`-o -` streams to stdout; `--format json` emits KiCad's structured ERC JSON for `jq`/programmatic parsing) |
 | JLCPCB part detail | `kicli jlcpcb part <LCSC_ID>` → brand, stock, price, datasheet URL |
 | JLCPCB search | `kicli jlcpcb search <query> [-n N] [--basic\|--extended] [--in-stock] [--package PKG]` |
 | Project BOM | `kicli jlcpcb bom <file\|dir> [-o CSV]` (merges all `.kicad_sch`) |
@@ -97,7 +97,8 @@ kicli sch project/ list | grep '^U'                              # all ICs
 kicli sch project/ list | awk -F'\t' '$5 == "(unset)"'           # missing PartNo
 kicli sch project/ list | awk -F'\t' '{print $6}' | sort | uniq -c  # per-sheet count
 kicli sch project/ view | grep '→ ~'                             # floating pins
-kicli sch project/ view | grep '→ +3.3V'                         # every pin on a net
+kicli sch project/ view --net +3.3V                              # flat pin-on-net table with types
+kicli sch project/ view | grep '→ +3.3V'                         # quick grep alternative
 kicli sch project/ info U1 --pins                                # full pin dump
 
 # single-file queries still work
@@ -110,6 +111,7 @@ kicli jlcpcb bom project/ | grep ',$' && echo "INCOMPLETE" || echo "READY"
 
 # ERC
 kicli sch project/top.kicad_sch erc -o - | grep -E '^\[|violations'
+kicli sch project/top.kicad_sch erc -o - --format json | jq '.sheets[].violations[] | select(.severity=="error")'
 ```
 
 ## Design philosophy — important

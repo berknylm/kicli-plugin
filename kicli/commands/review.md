@@ -23,7 +23,8 @@ Perform a thorough, grounded review of the schematic. **Do not guess — run the
 6. Floating pins: `kicli sch $ARGUMENTS view | grep '→ ~'` — each one is an ERC candidate. Decide: intentional no-connect, missed wire, or bug.
 7. Per-IC power sanity: for each `Uxx`, run `kicli sch $ARGUMENTS view | grep '/Uxx:\|^Uxx:' | grep 'pwrin'` (the `/` prefix catches the `sheet/Uxx` form emitted in directory mode).
 8. Unique nets per IC: `kicli sch $ARGUMENTS view | grep '/Uxx:\|^Uxx:' | awk '{print $4}' | sort -u`.
-9. Full pin table for any IC: `kicli sch $ARGUMENTS info Uxx --pins` (works across dir mode too — it searches every sheet for the ref).
+9. Full pin table for any IC: `kicli sch $ARGUMENTS info Uxx --pins` — NAME, TYPE, and NET columns are filled (resolved across sheets when $ARGUMENTS is a dir).
+10. All pins on a specific net (flat table with pin types): `kicli sch $ARGUMENTS view --net <NAME>`.
 
 ## Pass 3 — Datasheet cross-check
 
@@ -41,7 +42,7 @@ For each significant IC (Uxx):
 
 ## Pass 4 — ERC
 
-13. Stream KiCad's ERC report directly: `kicli sch <root.kicad_sch> erc -o -` (use the root file, not the project directory — `erc` is a kicad-cli passthrough that needs a single file). Pipe through `grep`/`awk` to triage.
+13. Stream KiCad's ERC report directly: `kicli sch <root.kicad_sch> erc -o -`. For programmatic triage, use `kicli sch <root> erc -o - --format json | jq '.sheets[].violations[] | select(.severity=="error")'` to get structured JSON (schema: https://schemas.kicad.org/erc.v1.json). Both require a single `.kicad_sch`, not a directory.
 
 ## Report format
 
