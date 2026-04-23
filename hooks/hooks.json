@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v kicli >/dev/null 2>&1 && kicli --version || printf 'kicli not found in PATH — install from https://github.com/berknylm/kicli/releases/latest\\n'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

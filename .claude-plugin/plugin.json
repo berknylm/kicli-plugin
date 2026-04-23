@@ -1,0 +1,16 @@
+{
+  "name": "kicli",
+  "description": "AI-native KiCad 10 toolkit — schematic review, pin/net connectivity, JLCPCB lookup, vendor ZIP import, project scaffolding. Wraps the kicli CLI so Claude can read and edit schematics end-to-end.",
+  "version": "1.0.0",
+  "author": {
+    "name": "berknylm",
+    "email": "incertum.v@gmail.com",
+    "url": "https://github.com/berknylm"
+  },
+  "homepage": "https://github.com/berknylm/kicli-plugin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/berknylm/kicli-plugin"
+  },
+  "license": "MIT"
+}
