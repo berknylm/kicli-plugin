@@ -12,17 +12,18 @@ Perform a thorough, grounded review of the schematic. **Do not guess — run the
 
 ## Pass 1 — Inventory & completeness
 
-1. `kicli sch $ARGUMENTS list` — print the component table (REF, VALUE, LIB, FOOTPRINT, PartNo).
-2. Flag components with empty `PartNo` (5th column) — those block BOM generation.
+1. `kicli sch $ARGUMENTS list` — print the component table. If `$ARGUMENTS` is a directory, a 6th column SHEET is appended so you can see which sheet each symbol is on.
+2. Flag components with `(unset)` in the PartNo column — those block BOM generation. Pipe: `kicli sch $ARGUMENTS list | awk -F'\t' '$5 == "(unset)"'`.
 3. Histogram by reference prefix: `kicli sch $ARGUMENTS list | cut -c1 | sort | uniq -c | sort -rn`.
-4. Note any unusual ratios (e.g. many U's without decoupling C's nearby).
+4. If directory mode, also histogram by sheet: `kicli sch $ARGUMENTS list | awk -F'\t' '{print $6}' | sort | uniq -c`.
 
 ## Pass 2 — Connectivity
 
-5. `kicli sch $ARGUMENTS view` — full pin+net map.
+5. `kicli sch $ARGUMENTS view` — full pin+net map. On a directory it walks every sheet and resolves nets via the root schematic's `kicad-cli` netlist, so sheet-pin ↔ hierarchical-label bridges (e.g. a child's `P3V3` to the root's `+3.3V`) appear under a single net name.
 6. Floating pins: `kicli sch $ARGUMENTS view | grep '→ ~'` — each one is an ERC candidate. Decide: intentional no-connect, missed wire, or bug.
-7. Per-IC power sanity: for each `Uxx`, run `kicli sch $ARGUMENTS view | grep '^Uxx:' | grep 'pwrin'` and list the power nets that reach it.
-8. Unique nets per IC: `kicli sch $ARGUMENTS view | grep '^Uxx:' | awk '{print $4}' | sort -u`.
+7. Per-IC power sanity: for each `Uxx`, run `kicli sch $ARGUMENTS view | grep '/Uxx:\|^Uxx:' | grep 'pwrin'` (the `/` prefix catches the `sheet/Uxx` form emitted in directory mode).
+8. Unique nets per IC: `kicli sch $ARGUMENTS view | grep '/Uxx:\|^Uxx:' | awk '{print $4}' | sort -u`.
+9. Full pin table for any IC: `kicli sch $ARGUMENTS info Uxx --pins` (works across dir mode too — it searches every sheet for the ref).
 
 ## Pass 3 — Datasheet cross-check
 
@@ -40,7 +41,7 @@ For each significant IC (Uxx):
 
 ## Pass 4 — ERC
 
-13. `kicli sch $ARGUMENTS erc` — KiCad's own electrical rule check. Triage output.
+13. Stream KiCad's ERC report directly: `kicli sch <root.kicad_sch> erc -o -` (use the root file, not the project directory — `erc` is a kicad-cli passthrough that needs a single file). Pipe through `grep`/`awk` to triage.
 
 ## Report format
 
