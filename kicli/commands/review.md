@@ -40,9 +40,18 @@ For each significant IC (Uxx):
     - RESET / BOOT / strap pins are in the required state
 12. Compare `kicli sch` connectivity against datasheet block diagram.
 
-## Pass 4 — ERC
+## Pass 4 — BOM cross-check
 
-13. Stream KiCad's ERC report directly: `kicli sch <root.kicad_sch> erc -o -`. For programmatic triage, use `kicli sch <root> erc -o - --format json | jq '.sheets[].violations[] | select(.severity=="error")'` to get structured JSON (schema: https://schemas.kicad.org/erc.v1.json). Both require a single `.kicad_sch`, not a directory.
+13. `kicli jlcpcb check $ARGUMENTS` — side-by-side table of schematic values/footprints vs JLCPCB API truth per component. Scan for:
+    - `Match=NO` → substring heuristic caught a footprint discrepancy; open the row and verify (common false positives: `Crystal_SMD_3225-4Pin` vs `SMD3225-4P`)
+    - `SchValue` ≠ implied-from-`JLCPCBModel` → wrong LCSC assigned (e.g. SchValue says `4k7` but Model is `0402WGF1002TCE` = 10k)
+    - `Stock=0` → assembly won't run; find substitute via `jlcpcb search`
+    - `PartNo=(unset)` → BOM incomplete; run `jlcpcb search` to fill
+    Don't blindly trust Match=yes either — read both strings yourself.
+
+## Pass 5 — ERC
+
+14. Stream KiCad's ERC report directly: `kicli sch <root.kicad_sch> erc -o -`. For programmatic triage, use `kicli sch <root> erc -o - --format json | jq '.sheets[].violations[] | select(.severity=="error")'` to get structured JSON (schema: https://schemas.kicad.org/erc.v1.json). Both require a single `.kicad_sch`, not a directory.
 
 ## Report format
 

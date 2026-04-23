@@ -28,6 +28,7 @@ or a **project directory** — in dir mode they walk every sheet.
 | JLCPCB part detail | `kicli jlcpcb part <LCSC_ID>` → brand, stock, price, datasheet URL |
 | JLCPCB search | `kicli jlcpcb search <query> [-n N] [--basic\|--extended] [--in-stock] [--package PKG]` |
 | Project BOM | `kicli jlcpcb bom <file\|dir> [-o CSV]` (merges all `.kicad_sch`) |
+| BOM cross-check | `kicli jlcpcb check <file\|dir> [-o F] [--json]` — side-by-side: `REF PartNo SchValue JLCPCBBrand JLCPCBModel SchFootprint JLCPCBPackage Stock Match`. `Match ∈ {yes,NO,?}` is a SUBSTRING HEURISTIC — agent MUST verify every NO (esp. BGA pitch, `-EP` variants, imperial/metric collisions) and should also read `SchValue` vs `JLCPCBModel` for value sanity |
 | Import vendor ZIP | `kicli import <file.zip> [-l LIB] [--project DIR]` (SnapEDA, Ultra Librarian, CSE) |
 | List imported libs | `kicli import --list` |
 | Scaffold project | `kicli new <name>` |
