@@ -23,6 +23,9 @@ or a **project directory** — in dir mode they walk every sheet.
 | Pin+net connectivity | `kicli sch <file\|dir> view [-o FILE] [--net NET]` (dir mode resolves nets across sheets via the root `.kicad_sch`'s netlist. `--net NET` emits a flat pin table for one net — `REF:PIN\tNAME\tTYPE[\tSHEET]`) |
 | Edit one field | `kicli sch <file> set <REF> <FIELD> <VALUE>` |
 | Bulk edit with filter | `kicli sch <file\|dir> set-all <VALUE> <FIELD> <NEW> [--footprint <glob>] [--only-empty] [--dry-run]` — `--only-empty` writes only when the target field is currently empty (first-time Footprint/LCSC assignment) |
+| Place a new symbol | `kicli sch <file> place <lib_id> <ref> [<value>] [--at X,Y] [--angle 0\|90\|180\|270]` — adds a symbol from the bundled KiCad catalog. `--at` auto-grids when omitted. Use for drawing from scratch: Device:R, Device:C, Amplifier_Operational:LM358, etc. |
+| Attach a net (label-first) | `kicli sch <file> net <net-name> <ref>:<pin> [<ref>:<pin> ...] [--as local\|global\|power]` — drops a label (or power port for known rails: GND, +3V3, +5V, VCC, VDD, VSS, VEE, GNDA, AGND, PGND, +BATT, EARTH, and `+<voltage>V` patterns) at the exact pin position. **No wires are drawn** — matching label text = same net. |
+| No-connect marker | `kicli sch <file> nc <ref>:<pin> [<ref>:<pin> ...]` — silences ERC on deliberately-floating pins |
 | Export | `kicli sch <file> export pdf\|svg\|netlist [-o FILE]` (BOM export removed in v0.9.0 — use `jlcpcb bom`) |
 | ERC check | `kicli sch <file> erc [-o FILE\|-] [--format report\|json]` (`-o -` streams to stdout; `--format json` emits KiCad's structured ERC JSON for `jq`/programmatic parsing) |
 | JLCPCB part detail | `kicli jlcpcb part <LCSC_ID>` → brand, stock, price, datasheet URL |
