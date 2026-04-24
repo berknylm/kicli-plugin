@@ -22,8 +22,8 @@ or a **project directory** — in dir mode they walk every sheet.
 | Component detail | `kicli sch <file\|dir> info <REF> [--pins]` (`--pins` adds full pin table `NUM\tNAME\tTYPE\tNET`) |
 | Pin+net connectivity | `kicli sch <file\|dir> view [-o FILE] [--net NET]` (dir mode resolves nets across sheets via the root `.kicad_sch`'s netlist. `--net NET` emits a flat pin table for one net — `REF:PIN\tNAME\tTYPE[\tSHEET]`) |
 | Edit one field | `kicli sch <file> set <REF> <FIELD> <VALUE>` |
-| Bulk edit with filter | `kicli sch <file\|dir> set-all <VALUE> <FIELD> <NEW> [--footprint <glob>] [--dry-run]` |
-| Export | `kicli sch <file> export pdf\|svg\|netlist\|bom [-o FILE]` |
+| Bulk edit with filter | `kicli sch <file\|dir> set-all <VALUE> <FIELD> <NEW> [--footprint <glob>] [--only-empty] [--dry-run]` — `--only-empty` writes only when the target field is currently empty (first-time Footprint/LCSC assignment) |
+| Export | `kicli sch <file> export pdf\|svg\|netlist [-o FILE]` (BOM export removed in v0.9.0 — use `jlcpcb bom`) |
 | ERC check | `kicli sch <file> erc [-o FILE\|-] [--format report\|json]` (`-o -` streams to stdout; `--format json` emits KiCad's structured ERC JSON for `jq`/programmatic parsing) |
 | JLCPCB part detail | `kicli jlcpcb part <LCSC_ID>` → brand, stock, price, datasheet URL |
 | JLCPCB search | `kicli jlcpcb search <query> [-n N] [--basic\|--extended] [--in-stock] [--package PKG]` |
@@ -31,7 +31,9 @@ or a **project directory** — in dir mode they walk every sheet.
 | BOM cross-check | `kicli jlcpcb check <file\|dir> [-o F] [--json]` — side-by-side: `REF PartNo SchValue JLCPCBBrand JLCPCBModel SchFootprint JLCPCBPackage Stock Match`. `Match ∈ {yes,NO,?}` is a SUBSTRING HEURISTIC — agent MUST verify every NO (esp. BGA pitch, `-EP` variants, imperial/metric collisions) and should also read `SchValue` vs `JLCPCBModel` for value sanity |
 | Import vendor ZIP | `kicli import <file.zip> [-l LIB] [--project DIR]` (SnapEDA, Ultra Librarian, CSE) |
 | List imported libs | `kicli import --list` |
-| Scaffold project | `kicli new <name>` |
+| Scaffold project | `kicli new <name> [dir] [--force]` |
+| Symbol catalog | `kicli sym search <q> [--pins N] [--lib L] [-n N]` / `kicli sym info <lib:name> [--pins]` / `kicli sym list [lib]` — scans bundled KiCad libs + project libs/symbols/ |
+| Footprint catalog | `kicli fp search <q> [--pads N] [--lib L] [-n N]` / `kicli fp info <lib:name>` / `kicli fp list [lib]` — scans bundled `.pretty` + project libs/footprints/. Note: `pads` includes thermal-via splits on exposed-pad footprints, so may exceed pin count |
 
 ## Key conventions
 
