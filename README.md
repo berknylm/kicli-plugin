@@ -13,36 +13,25 @@ and any other Claude Code surface that supports plugins.
 
 ## Install
 
-### Step 1 — Install the `kicli` binary (prerequisite, not bundled)
+### Step 1 — Install prerequisites (once per machine)
 
-Download the correct archive for your platform from
-[kicli releases](https://github.com/berknylm/kicli/releases/latest):
+| Tool | Why | Where |
+|---|---|---|
+| `kicli` binary | The plugin drives this CLI; not bundled. | [kicli releases](https://github.com/berknylm/kicli/releases/latest) — pick the archive for your OS, extract, put the binary on `PATH` |
+| KiCad 10 | Required for `view` / `erc` / `export`. | [kicad.org/download](https://www.kicad.org/download/) — kicli auto-detects the default install path |
 
-```bash
-# macOS (Apple Silicon)
-curl -L https://github.com/berknylm/kicli/releases/latest/download/kicli-macos-arm64.tar.gz | tar -xz
-sudo mv kicli /usr/local/bin/
+Verify the binary landed:
 
-# macOS (Intel)
-curl -L https://github.com/berknylm/kicli/releases/latest/download/kicli-macos-x86_64.tar.gz | tar -xz
-sudo mv kicli /usr/local/bin/
-
-# Linux
-curl -L https://github.com/berknylm/kicli/releases/latest/download/kicli-linux-x86_64.tar.gz | tar -xz
-sudo mv kicli /usr/local/bin/
-
-# Windows — download kicli-windows-x86_64.zip, unzip, add the folder to PATH
 ```
-
-Verify:
-
-```bash
 kicli --version
-# → kicli 0.9.0  (or newer)
+# → kicli 0.9.0   (or newer)
 ```
 
-You also need **KiCad 10** installed — [kicad.org/download](https://www.kicad.org/download/).
-kicli auto-detects it in the default install paths.
+If the command isn't found, the extracted `kicli` file isn't on your
+shell's `PATH`. Typical fixes:
+- **macOS/Linux:** `sudo mv kicli /usr/local/bin/`
+- **Windows:** move `kicli.exe` to a folder that's already on `PATH`
+  (or add the folder via *System Properties → Environment Variables*)
 
 ### Step 2 — Install the plugin (from a terminal, not from chat)
 
