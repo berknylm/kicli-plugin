@@ -44,34 +44,40 @@ kicli --version
 You also need **KiCad 10** installed — [kicad.org/download](https://www.kicad.org/download/).
 kicli auto-detects it in the default install paths.
 
-### Step 2 — Install the plugin
+### Step 2 — Install the plugin (from a terminal, not from chat)
 
-#### Inside Claude Desktop's "Claude Code" tab (recommended)
+> **Important:** the `/plugin marketplace add …` slash command does **not
+> work** in Claude Desktop's Claude Code tab. Desktop runs an embedded
+> Claude Code that doesn't expose the plugin-management slash surface.
+> You must use the **`claude` CLI from your terminal**.
 
-Open a Claude Code session in Claude Desktop and type **exactly**:
-
-```
-/plugin marketplace add berknylm/kicli-plugin
-```
-
-Hit Enter, wait for `✔ Successfully added marketplace`. Then:
-
-```
-/plugin install kicli@kicli-marketplace
-```
-
-Claude Code will say: `✔ Plugin "kicli" updated ... Restart to apply changes.`
-
-**Quit Claude Desktop completely** (`Cmd+Q` on macOS, `Alt+F4` → quit on
-Windows — closing the window isn't enough) and reopen it.
-
-#### Or from a terminal
+Open Terminal (macOS / Linux) or PowerShell (Windows) and run:
 
 ```bash
 claude plugin marketplace add berknylm/kicli-plugin
 claude plugin install kicli@kicli-marketplace
-# Then fully quit + reopen Claude Desktop.
 ```
+
+Expected output:
+
+```
+✔ Successfully added marketplace: kicli-marketplace
+✔ Successfully installed plugin: kicli@kicli-marketplace (scope: user)
+```
+
+If `claude` is not in your PATH, find it:
+
+- **macOS:** usually `/Users/<you>/.local/bin/claude` after Claude Desktop
+  install. Add `~/.local/bin` to your shell PATH, or call the full path:
+  `/Users/<you>/.local/bin/claude plugin …`
+- **Windows:** usually `C:\Users\<you>\AppData\Local\claude\claude.exe` or
+  the npm-installed `claude.cmd`. In PowerShell, run `Get-Command claude`
+  to find it.
+- **Linux:** `~/.local/share/claude/versions/<n>/claude` typically.
+
+After both commands succeed, **fully quit Claude Desktop** (`Cmd+Q` on
+macOS — closing the window is not enough; `Alt+F4` + "Quit" on Windows)
+and reopen it.
 
 ### Step 3 — Verify it's wired up
 
@@ -145,8 +151,12 @@ the right `kicli` command directly (including the catalog ones like
 Claude Desktop must be fully restarted (`Cmd+Q`, not just closing the
 window). Commands are loaded at session start and cached. If you were
 already inside a session during install, the plugin files are on disk but
-the session's system prompt is stale. A `/reload-plugins` inside the
-session may pick them up; a full quit + reopen always does.
+the session's system prompt is stale. A full quit + reopen always does.
+
+**`/plugin marketplace add …` says "unknown command" in Desktop chat.**
+This is expected — Claude Desktop's Claude Code tab doesn't support the
+plugin-management slash commands. Run the `claude plugin …` commands
+from your terminal instead (Step 2 above).
 
 **SessionStart hook prints `kicli not found in PATH`.**
 You haven't installed the binary yet (Step 1) or the shell that Claude
