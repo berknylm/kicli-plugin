@@ -7,14 +7,14 @@
   },
   "metadata": {
     "description": "Plugins for working with KiCad 10 schematics inside Claude Code",
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   "plugins": [
     {
       "name": "kicli",
       "source": "./kicli",
       "description": "AI-native KiCad 10 toolkit — schematic review, pin/net connectivity, JLCPCB lookup, vendor ZIP import",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "category": "engineering",
       "homepage": "https://github.com/berknylm/kicli-plugin",
       "author": {
